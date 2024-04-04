@@ -9,14 +9,7 @@ class GildedRose {
 
     public void updateQuality() {
         for (Item item : items) {
-            if (!isAgedBrie(item)
-                    && !isBackstagePasses(item)) {
-                if (item.quality > 0) {
-                    if (!isSulfura(item)) {
-                        item.quality = item.quality - 1;
-                    }
-                }
-            } else {
+            if (isAgedBrie(item) || isBackstagePasses(item)) {
                 if (item.quality < 50) {
                     item.quality = item.quality + 1;
 
@@ -34,6 +27,12 @@ class GildedRose {
                         }
                     }
                 }
+            } else {
+                if (item.quality > 0) {
+                    if (!isSulfura(item)) {
+                        item.quality = item.quality - 1;
+                    }
+                }
             }
 
             if (!isSulfura(item)) {
@@ -41,19 +40,20 @@ class GildedRose {
             }
 
             if (item.sellIn < 0) {
-                if (!isAgedBrie(item)) {
-                    if (!isBackstagePasses(item)) {
-                        if (item.quality > 0) {
-                            if (!isSulfura(item)) {
-                                item.quality = item.quality - 1;
-                            }
-                        }
-                    } else {
-                        item.quality = 0;
-                    }
-                } else {
+                if (isAgedBrie(item)) {
                     if (item.quality < 50) {
                         item.quality = item.quality + 1;
+                    }
+                } else {
+                    if (isBackstagePasses(item)) {
+                        item.quality = 0;
+                    } else {
+                        if (item.quality > 0) {
+                            if (isSulfura(item)) {
+                                continue;
+                            }
+                            item.quality = item.quality - 1;
+                        }
                     }
                 }
             }
