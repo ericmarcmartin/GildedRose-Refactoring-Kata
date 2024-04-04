@@ -15,23 +15,17 @@ class GildedRose {
 
                     if (isBackstagePasses(item)) {
                         if (item.sellIn < 11) {
-                            if (item.quality < 50) {
-                                item.quality = item.quality + 1;
-                            }
+                            incrementQuality(item);
                         }
 
                         if (item.sellIn < 6) {
-                            if (item.quality < 50) {
-                                item.quality = item.quality + 1;
-                            }
+                            incrementQuality(item);
                         }
                     }
                 }
             } else {
                 if (item.quality > 0) {
-                    if (!isSulfura(item)) {
-                        item.quality = item.quality - 1;
-                    }
+                    decrementQuality(item);
                 }
             }
 
@@ -41,22 +35,29 @@ class GildedRose {
 
             if (item.sellIn < 0) {
                 if (isAgedBrie(item)) {
-                    if (item.quality < 50) {
-                        item.quality = item.quality + 1;
-                    }
+                    incrementQuality(item);
                 } else {
                     if (isBackstagePasses(item)) {
                         item.quality = 0;
                     } else {
                         if (item.quality > 0) {
-                            if (isSulfura(item)) {
-                                continue;
-                            }
-                            item.quality = item.quality - 1;
+                           decrementQuality(item);
                         }
                     }
                 }
             }
+        }
+    }
+
+    private static void decrementQuality(Item item) {
+        if (!isSulfura(item)) {
+            item.quality = item.quality - 1;
+        }
+    }
+
+    private static void incrementQuality(Item item) {
+        if (item.quality < 50) {
+            item.quality = item.quality + 1;
         }
     }
 
