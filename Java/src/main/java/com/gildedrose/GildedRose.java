@@ -9,72 +9,7 @@ class GildedRose {
 
     public void updateQuality() {
         for (Item item : items) {
-            updateQuality(new GildedRoseItem(item));
+             new GildedRoseItem(item).updateQuality();
         }
-    }
-
-    private static void updateQuality(GildedRoseItem gildedroseItem) {
-        Item item = gildedroseItem.item;
-        if (isAgedBrie(item) || isBackstagePasses(item)) {
-            if (item.quality < 50) {
-                item.quality = item.quality + 1;
-
-                if (isBackstagePasses(item)) {
-                    if (item.sellIn < 11) {
-                        incrementQuality(item);
-                    }
-
-                    if (item.sellIn < 6) {
-                        incrementQuality(item);
-                    }
-                }
-            }
-        } else {
-            if (item.quality > 0) {
-                decrementQuality(item);
-            }
-        }
-
-        if (!isSulfura(item)) {
-            item.sellIn = item.sellIn - 1;
-        }
-
-        if (item.sellIn < 0) {
-            if (isAgedBrie(item)) {
-                incrementQuality(item);
-            } else {
-                if (isBackstagePasses(item)) {
-                    item.quality = 0;
-                } else {
-                    if (item.quality > 0) {
-                       decrementQuality(item);
-                    }
-                }
-            }
-        }
-    }
-
-    private static void decrementQuality(Item item) {
-        if (!isSulfura(item)) {
-            item.quality = item.quality - 1;
-        }
-    }
-
-    private static void incrementQuality(Item item) {
-        if (item.quality < 50) {
-            item.quality = item.quality + 1;
-        }
-    }
-
-    private static boolean isSulfura(Item item) {
-        return item.name.equals("Sulfuras, Hand of Ragnaros");
-    }
-
-    private static boolean isBackstagePasses(Item item) {
-        return item.name.equals("Backstage passes to a TAFKAL80ETC concert");
-    }
-
-    private static boolean isAgedBrie(Item item) {
-        return item.name.equals("Aged Brie");
     }
 }
