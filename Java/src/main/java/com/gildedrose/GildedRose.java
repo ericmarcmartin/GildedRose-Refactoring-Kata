@@ -9,40 +9,45 @@ class GildedRose {
 
     public void updateQuality() {
         for (Item item : items) {
-            if (isAgedBrie(item) || isBackstagePasses(item)) {
-                if (item.quality < 50) {
-                    item.quality = item.quality + 1;
+            updateQuality(new GildedRoseItem(item));
+        }
+    }
 
-                    if (isBackstagePasses(item)) {
-                        if (item.sellIn < 11) {
-                            incrementQuality(item);
-                        }
+    private static void updateQuality(GildedRoseItem gildedroseItem) {
+        Item item = gildedroseItem.item;
+        if (isAgedBrie(item) || isBackstagePasses(item)) {
+            if (item.quality < 50) {
+                item.quality = item.quality + 1;
 
-                        if (item.sellIn < 6) {
-                            incrementQuality(item);
-                        }
+                if (isBackstagePasses(item)) {
+                    if (item.sellIn < 11) {
+                        incrementQuality(item);
+                    }
+
+                    if (item.sellIn < 6) {
+                        incrementQuality(item);
                     }
                 }
+            }
+        } else {
+            if (item.quality > 0) {
+                decrementQuality(item);
+            }
+        }
+
+        if (!isSulfura(item)) {
+            item.sellIn = item.sellIn - 1;
+        }
+
+        if (item.sellIn < 0) {
+            if (isAgedBrie(item)) {
+                incrementQuality(item);
             } else {
-                if (item.quality > 0) {
-                    decrementQuality(item);
-                }
-            }
-
-            if (!isSulfura(item)) {
-                item.sellIn = item.sellIn - 1;
-            }
-
-            if (item.sellIn < 0) {
-                if (isAgedBrie(item)) {
-                    incrementQuality(item);
+                if (isBackstagePasses(item)) {
+                    item.quality = 0;
                 } else {
-                    if (isBackstagePasses(item)) {
-                        item.quality = 0;
-                    } else {
-                        if (item.quality > 0) {
-                           decrementQuality(item);
-                        }
+                    if (item.quality > 0) {
+                       decrementQuality(item);
                     }
                 }
             }
